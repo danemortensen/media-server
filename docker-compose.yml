@@ -1,4 +1,16 @@
 services:
+  prowlarr:
+    container_name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /docker/appdata/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
   radarr:
     container_name: radarr
     image: lscr.io/linuxserver/radarr:latest
@@ -45,5 +57,4 @@ services:
       - 6881:6881
       - 6881:6881/udp
     restart: unless-stopped
-
 
