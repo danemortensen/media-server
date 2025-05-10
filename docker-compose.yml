@@ -19,7 +19,7 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - ./appdata/sonarr:/config
+      - ./appdata/radarr:/config
       - /mnt/hdd/data:/data
       - /etc/localtime:/etc/localtime:ro
     ports:
