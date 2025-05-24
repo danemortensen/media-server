@@ -1,1 +1,5 @@
-appdata/
+appdata/*
+!appdata/recyclarr
+appdata/recyclarr/*
+!appdata/recyclarr/configs
+!appdata/recyclarr/includes
