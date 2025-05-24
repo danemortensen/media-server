@@ -4,7 +4,6 @@ sonarr:
     api_key: !secret sonarr_api_key
 
     include:
-      # Comment out any of the following includes to disable them
       - template: sonarr-quality-definition-series
       - template: sonarr-v4-quality-profile-web-1080p
       - template: sonarr-v4-quality-profile-web-2160p

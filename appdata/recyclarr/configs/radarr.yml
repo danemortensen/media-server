@@ -4,7 +4,6 @@ radarr:
     api_key: !secret radarr_api_key
 
     include:
-      # Comment out any of the following includes to disable them
       - template: radarr-quality-definition-movie
       - template: radarr-quality-profile-hd-bluray-web
       - template: radarr-quality-profile-uhd-bluray-web
