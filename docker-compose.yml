@@ -39,6 +39,14 @@ services:
     ports:
       - 8989:8989
     restart: unless-stopped
+  recyclarr:
+    container_name: recyclarr
+    image: ghcr.io/recyclarr/recyclarr
+    user: 1000:1000
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - ./appdata/recyclarr:/config
   qbittorrent:
     container_name: qbittorrent
     image: lscr.io/linuxserver/qbittorrent:latest
