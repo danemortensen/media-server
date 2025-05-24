@@ -3,6 +3,9 @@ radarr:
     base_url: !secret radarr_base_url
     api_key: !secret radarr_api_key
 
+    delete_old_custom_formats: true
+    replace_existing_custom_formats: true
+
     include:
       - template: radarr-quality-definition-movie
       - template: radarr-quality-profile-hd-bluray-web
