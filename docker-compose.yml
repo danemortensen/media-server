@@ -3,9 +3,9 @@ services:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
     volumes:
       - ./appdata/prowlarr:/config
     ports:
@@ -15,9 +15,9 @@ services:
     container_name: radarr
     image: lscr.io/linuxserver/radarr:latest
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
     volumes:
       - ./appdata/radarr:/config
       - /mnt/hdd/data:/data
@@ -29,9 +29,9 @@ services:
     container_name: sonarr
     image: lscr.io/linuxserver/sonarr:latest
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
     volumes:
       - ./appdata/sonarr:/config
       - /mnt/hdd/data:/data
@@ -44,16 +44,16 @@ services:
     image: ghcr.io/recyclarr/recyclarr
     user: 1000:1000
     environment:
-      - TZ=America/Los_Angeles
+      - TZ=${TIMEZONE}
     volumes:
       - ./appdata/recyclarr:/config
   qbittorrent:
     container_name: qbittorrent
     image: lscr.io/linuxserver/qbittorrent:latest
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
@@ -69,9 +69,9 @@ services:
     container_name: jellyfin
     image: lscr.io/linuxserver/jellyfin:latest
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
       - JELLYFIN_PublishedServerUrl=http://192.168.0.5  #optional
     volumes:
       - ./appdata/jellyfin:/config

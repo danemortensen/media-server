@@ -1,3 +1,4 @@
+.env
 appdata/*
 !appdata/recyclarr
 appdata/recyclarr/*
