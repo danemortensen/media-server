@@ -47,6 +47,26 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ./appdata/recyclarr:/config
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./appdata/gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_PRESHARED_KEY=${WIREGUARD_PRESHARED_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - SERVER_COUNTRIES=${SERVER_COUNTRIES}
+      - FIREWALL_VPN_INPUT_PORTS=${FIREWALL_VPN_INPUT_PORTS}
+    ports:
+      - ${FIREWALL_VPN_INPUT_PORTS}:${FIREWALL_VPN_INPUT_PORTS}/tcp
+      - ${FIREWALL_VPN_INPUT_PORTS}:${FIREWALL_VPN_INPUT_PORTS}/udp
+      - 8080:8080       # qBittorrent Web UI
+    restart: unless-stopped
   qbittorrent:
     container_name: qbittorrent
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -55,15 +75,14 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
       - WEBUI_PORT=8080
-      - TORRENTING_PORT=6881
+      - TORRENTING_PORT=${FIREWALL_VPN_INPUT_PORTS}
     volumes:
       - ./appdata/qbittorrent:/config
       - /mnt/hdd/data/torrents:/data/torrents
       - /etc/localtime:/etc/localtime:ro
-    ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
+    depends_on:
+      - gluetun
+    network_mode: service:gluetun
     restart: unless-stopped
   jellyfin:
     container_name: jellyfin
