@@ -1,4 +1,10 @@
 services:
+  # ______                  _
+  # | ___ \                | |
+  # | |_/ / __ _____      _| | __ _ _ __ _ __
+  # |  __/ '__/ _ \ \ /\ / / |/ _` | '__| '__|
+  # | |  | | | (_) \ V  V /| | (_| | |  | |
+  # \_|  |_|  \___/ \_/\_/ |_|\__,_|_|  |_|
   prowlarr:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr:latest
@@ -11,6 +17,13 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
+
+  # ______          _
+  # | ___ \        | |
+  # | |_/ /__ _  __| | __ _ _ __ _ __
+  # |    // _` |/ _` |/ _` | '__| '__|
+  # | |\ \ (_| | (_| | (_| | |  | |
+  # \_| \_\__,_|\__,_|\__,_|_|  |_|
   radarr:
     container_name: radarr
     image: lscr.io/linuxserver/radarr:latest
@@ -25,6 +38,13 @@ services:
     ports:
       - 7878:7878
     restart: unless-stopped
+
+  #  _____
+  # /  ___|
+  # \ `--.  ___  _ __   __ _ _ __ _ __
+  #  `--. \/ _ \| '_ \ / _` | '__| '__|
+  # /\__/ / (_) | | | | (_| | |  | |
+  # \____/ \___/|_| |_|\__,_|_|  |_|
   sonarr:
     container_name: sonarr
     image: lscr.io/linuxserver/sonarr:latest
@@ -39,6 +59,15 @@ services:
     ports:
       - 8989:8989
     restart: unless-stopped
+
+  # ______                     _
+  # | ___ \                   | |
+  # | |_/ /___  ___ _   _  ___| | __ _ _ __ _ __
+  # |    // _ \/ __| | | |/ __| |/ _` | '__| '__|
+  # | |\ \  __/ (__| |_| | (__| | (_| | |  | |
+  # \_| \_\___|\___|\__, |\___|_|\__,_|_|  |_|
+  #                  __/ |
+  #                 |___/
   recyclarr:
     container_name: recyclarr
     image: ghcr.io/recyclarr/recyclarr
@@ -47,6 +76,13 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ./appdata/recyclarr:/config
+
+  #  _____ _            _
+  # |  __ \ |          | |
+  # | |  \/ |_   _  ___| |_ _   _ _ __
+  # | | __| | | | |/ _ \ __| | | | '_ \
+  # | |_\ \ | |_| |  __/ |_| |_| | | | |
+  #  \____/_|\__,_|\___|\__|\__,_|_| |_|
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
@@ -67,6 +103,15 @@ services:
       - ${FIREWALL_VPN_INPUT_PORTS}:${FIREWALL_VPN_INPUT_PORTS}/udp
       - 8080:8080       # qBittorrent Web UI
     restart: unless-stopped
+
+  #       ______ _ _   _                            _
+  #       | ___ (_) | | |                          | |
+  #   __ _| |_/ /_| |_| |_ ___  _ __ _ __ ___ _ __ | |_
+  #  / _` | ___ \ | __| __/ _ \| '__| '__/ _ \ '_ \| __|
+  # | (_| | |_/ / | |_| || (_) | |  | | |  __/ | | | |_
+  #  \__, \____/|_|\__|\__\___/|_|  |_|  \___|_| |_|\__|
+  #     | |
+  #     |_|
   qbittorrent:
     container_name: qbittorrent
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -84,6 +129,15 @@ services:
       - gluetun
     network_mode: service:gluetun
     restart: unless-stopped
+
+  #    ___      _ _        __ _
+  #   |_  |    | | |      / _(_)
+  #     | | ___| | |_   _| |_ _ _ __
+  #     | |/ _ \ | | | | |  _| | '_ \
+  # /\__/ /  __/ | | |_| | | | | | | |
+  # \____/ \___|_|_|\__, |_| |_|_| |_|
+  #                  __/ |
+  #                 |___/
   jellyfin:
     container_name: jellyfin
     image: lscr.io/linuxserver/jellyfin:latest
