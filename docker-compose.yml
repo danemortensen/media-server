@@ -77,6 +77,33 @@ services:
     volumes:
       - ./appdata/recyclarr:/config
 
+  #  _   _                        _
+  # | | | |                      | |
+  # | | | |_ __  _ __   __ _  ___| | _____ _ __ _ __
+  # | | | | '_ \| '_ \ / _` |/ __| |/ / _ \ '__| '__|
+  # | |_| | | | | |_) | (_| | (__|   <  __/ |  | |
+  #  \___/|_| |_| .__/ \__,_|\___|_|\_\___|_|  |_|
+  #             | |
+  #             |_|
+  unpackerr:
+    container_name: unpackerr
+    image: golift/unpackerr
+    volumes:
+      - ./appdata/unpackerr:/config
+      - /mnt/hdd/data/torrents:/downloads
+    user: 1000:1000
+    environment:
+      - TZ=${TIMEZONE}
+      - UN_INTERVAL=2m
+      - UN_LOG_FILE=/config/unpackerr.log
+      - UN_SONARR_0_URL=http://sonarr:8989
+      - UN_SONARR_0_API_KEY=${SONARR_API_KEY}
+      - UN_SONARR_0_PATHS_0=/downloads/tv
+      - UN_RADARR_0_URL=http://radarr:7878
+      - UN_RADARR_0_API_KEY=${RADARR_API_KEY}
+      - UN_RADARR_0_PATHS_0=/downloads/movies
+    restart: always
+
   #  _____ _            _
   # |  __ \ |          | |
   # | |  \/ |_   _  ___| |_ _   _ _ __
