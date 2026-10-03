@@ -1,10 +1,12 @@
 services:
+  # ============================================================================
   # ______                  _
   # | ___ \                | |
   # | |_/ / __ _____      _| | __ _ _ __ _ __
   # |  __/ '__/ _ \ \ /\ / / |/ _` | '__| '__|
   # | |  | | | (_) \ V  V /| | (_| | |  | |
   # \_|  |_|  \___/ \_/\_/ |_|\__,_|_|  |_|
+  # ============================================================================
   prowlarr:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr:latest
@@ -18,12 +20,14 @@ services:
       - 9696:9696
     restart: unless-stopped
 
+  # ============================================================================
   # ______          _
   # | ___ \        | |
   # | |_/ /__ _  __| | __ _ _ __ _ __
   # |    // _` |/ _` |/ _` | '__| '__|
   # | |\ \ (_| | (_| | (_| | |  | |
   # \_| \_\__,_|\__,_|\__,_|_|  |_|
+  # ============================================================================
   radarr:
     container_name: radarr
     image: lscr.io/linuxserver/radarr:latest
@@ -39,12 +43,14 @@ services:
       - 7878:7878
     restart: unless-stopped
 
+  # ============================================================================
   #  _____
   # /  ___|
   # \ `--.  ___  _ __   __ _ _ __ _ __
   #  `--. \/ _ \| '_ \ / _` | '__| '__|
   # /\__/ / (_) | | | | (_| | |  | |
   # \____/ \___/|_| |_|\__,_|_|  |_|
+  # ============================================================================
   sonarr:
     container_name: sonarr
     image: lscr.io/linuxserver/sonarr:latest
@@ -60,6 +66,7 @@ services:
       - 8989:8989
     restart: unless-stopped
 
+  # ============================================================================
   # ______                     _
   # | ___ \                   | |
   # | |_/ /___  ___ _   _  ___| | __ _ _ __ _ __
@@ -68,6 +75,7 @@ services:
   # \_| \_\___|\___|\__, |\___|_|\__,_|_|  |_|
   #                  __/ |
   #                 |___/
+  # ============================================================================
   recyclarr:
     container_name: recyclarr
     image: ghcr.io/recyclarr/recyclarr
@@ -77,6 +85,7 @@ services:
     volumes:
       - ./appdata/recyclarr:/config
 
+  # ============================================================================
   #  _   _                        _
   # | | | |                      | |
   # | | | |_ __  _ __   __ _  ___| | _____ _ __ _ __
@@ -85,6 +94,7 @@ services:
   #  \___/|_| |_| .__/ \__,_|\___|_|\_\___|_|  |_|
   #             | |
   #             |_|
+  # ============================================================================
   unpackerr:
     container_name: unpackerr
     image: golift/unpackerr
@@ -104,12 +114,14 @@ services:
       - UN_RADARR_0_PATHS_0=/downloads/movies
     restart: always
 
+  # ============================================================================
   #  _____ _            _
   # |  __ \ |          | |
   # | |  \/ |_   _  ___| |_ _   _ _ __
   # | | __| | | | |/ _ \ __| | | | '_ \
   # | |_\ \ | |_| |  __/ |_| |_| | | | |
   #  \____/_|\__,_|\___|\__|\__,_|_| |_|
+  # ============================================================================
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
@@ -129,8 +141,14 @@ services:
       - ${FIREWALL_VPN_INPUT_PORTS}:${FIREWALL_VPN_INPUT_PORTS}/tcp
       - ${FIREWALL_VPN_INPUT_PORTS}:${FIREWALL_VPN_INPUT_PORTS}/udp
       - 8080:8080       # qBittorrent Web UI
+    healthcheck:
+      test: ["CMD", "wget", "-q", "https://1.1.1.1", "-O", "/dev/null"]
+      interval: 1m
+      timeout: 10s
+      retries: 10
     restart: unless-stopped
 
+  # ============================================================================
   #       ______ _ _   _                            _
   #       | ___ (_) | | |                          | |
   #   __ _| |_/ /_| |_| |_ ___  _ __ _ __ ___ _ __ | |_
@@ -139,6 +157,7 @@ services:
   #  \__, \____/|_|\__|\__\___/|_|  |_|  \___|_| |_|\__|
   #     | |
   #     |_|
+  # ============================================================================
   qbittorrent:
     container_name: qbittorrent
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -153,10 +172,12 @@ services:
       - /mnt/hdd/data/torrents:/data/torrents
       - /etc/localtime:/etc/localtime:ro
     depends_on:
-      - gluetun
+      gluetun:
+        condition: service_healthy
     network_mode: service:gluetun
     restart: unless-stopped
 
+  # ============================================================================
   #    ___      _ _        __ _
   #   |_  |    | | |      / _(_)
   #     | | ___| | |_   _| |_ _ _ __
@@ -165,6 +186,7 @@ services:
   # \____/ \___|_|_|\__, |_| |_|_| |_|
   #                  __/ |
   #                 |___/
+  # ============================================================================
   jellyfin:
     container_name: jellyfin
     image: lscr.io/linuxserver/jellyfin:latest
@@ -176,10 +198,46 @@ services:
     volumes:
       - ./appdata/jellyfin:/config
       - /mnt/hdd/data/media:/data/media
+    devices:
+      - /dev/dri:/dev/dri
     ports:
       - 8096:8096
       - 8920:8920       #optional
       - 7359:7359/udp   #optional
       - 1900:1900/udp   #optional
+    restart: unless-stopped
+
+  # ============================================================================
+  #  _____ _                 _  __ _                 ____________ _   _  _____
+  # /  __ \ |               | |/ _| |                |  _  \  _  \ \ | |/  ___|
+  # | /  \/ | ___  _   _  __| | |_| | __ _ _ __ ___  | | | | | | |  \| |\ `--.
+  # | |   | |/ _ \| | | |/ _` |  _| |/ _` | '__/ _ \ | | | | | | | . ` | `--. \
+  # | \__/\ | (_) | |_| | (_| | | | | (_| | | |  __/ | |/ /| |/ /| |\  |/\__/ /
+  #  \____/_|\___/ \__,_|\__,_|_| |_|\__,_|_|  \___| |___/ |___/ \_| \_/\____/
+  # ============================================================================
+  cloudflare-ddns:
+    container_name: cloudflare-ddns
+    image: timothyjmiller/cloudflare-ddns:latest
+    security_opt:
+      - no-new-privileges:true
+    network_mode: "host"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./appdata/cloudflare-ddns/config.json:/config.json
+    restart: unless-stopped
+
+  npm:
+    container_name: nginx-proxy-manager
+    image: jc21/nginx-proxy-manager:latest
+    volumes:
+      - ./appdata/nginx-proxy-manager/data:/data
+      - ./appdata/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
     restart: unless-stopped
 
