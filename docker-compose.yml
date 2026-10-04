@@ -207,6 +207,33 @@ services:
       - 1900:1900/udp   #optional
     restart: unless-stopped
 
+  audiobookshelf:
+    container_name: audiobookshelf
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    environment:
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./appdata/audiobookshelf/config:/config
+      - ./appdata/audiobookshelf/metadata:/metadata
+      - /mnt/hdd/data/media/audiobooks:/audiobooks
+    ports:
+      - 13378:80
+    restart: unless-stopped
+
+  calibre-web:
+    container_name: calibre-web
+    image: lscr.io/linuxserver/calibre-web:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./appdata/calibre-web:/config
+      - /mnt/hdd/data/media/books:/books
+    ports:
+      - 8083:8083
+    restart: unless-stopped
+
   # ============================================================================
   #  _____ _                 _  __ _                 ____________ _   _  _____
   # /  __ \ |               | |/ _| |                |  _  \  _  \ \ | |/  ___|
